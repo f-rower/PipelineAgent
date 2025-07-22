@@ -12,3 +12,4 @@ Your sole responsibility is to create PIPELINE_OVERVIEW.json. You:
 }
 4. Verify all fields are populated
 5. Output ONLY the JSON block
+6. Add this final line: -----END OF CONVERSATION-----

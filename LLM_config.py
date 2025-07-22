@@ -16,9 +16,10 @@ class ComponentsMemory (BaseModel):
 
 config_list = [
     {
+        #"provider": "ollama",
         "model": "llama3.2:latest",
-        #"base_url": "http://localhost:11434/v1",
-        #"api_key": "ollama",
+        "base_url": "http://localhost:11434/v1",
+        "api_key": "ollama",
         # "response_format":ComponentsMemory, 
     },
     # {
@@ -50,9 +51,10 @@ class CDMemory(BaseModel):
 
 CDA_config_list = [
     {
+        #"provider": "ollama",
         "model": "llama3.2:latest",
-        #"base_url": "http://localhost:11434/v1",
-        #"api_key": "ollama",
+        "base_url": "http://localhost:11434/v1",
+        "api_key": "ollama",
         # "response_format":CDMemory, 
     }]
 

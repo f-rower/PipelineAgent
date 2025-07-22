@@ -141,8 +141,11 @@ class CDMemory(BaseModel):
 CDA = MemoryAgent(
     name="ConversationDelegationAgent",
     description=generate_prompt("prompts/agents/conversation-delegation.prompt"),
-    # system_message = """You are the Conversation Delegation Agent, responsible for coordinating the efforts of the data pipeline engineering team in creating conceptual designs and architecture for a different company to implement.
-    # Your role is to break down the complex discusion of designing an efficient data pipeline into propose, discuss, and consolidate steps.
+    # system_message = """You are the Conversation Delegation Agent, 
+    # responsible for coordinating the efforts of the data pipeline engineering team in creating conceptual designs 
+    # and architecture for a different company to implement.
+    # Your role is to break down the complex discusion of designing an efficient data pipeline into propose, 
+    # discuss, and consolidate steps.
     # You may facilitate discussion between team members where their expertise aligns.
     # You will need to consider the strengths and responsibilities of each agent in your team:
     # - Machine learning Engineer
@@ -151,8 +154,11 @@ CDA = MemoryAgent(
     # - Business Objective Engineer
     # - Knowledge Intergration
     # - Evaluate and Refinement
-    # Your system messages should provide clear instructions for next speaker, ensuring a well-organized and productive workflow.
-    # Once all tasks are completed, you will summarize the overall design of the data pipeline, provide a high-level overview of the data pipeline's functionality, produce any required file, and end with "TERMINATE". """,
+    # Your system messages should provide clear instructions for next speaker, 
+    # ensuring a well-organized and productive workflow.
+    # Once all tasks are completed, you will summarize the overall design of the data pipeline, 
+    # provide a high-level overview of the data pipeline's functionality, produce any required file, 
+    # and end with "TERMINATE". """,
     system_message=generate_prompt("prompts/agents/conversation-delegation.prompt"),
     structured_output=CDMemory,
     # llm_config=llm_config.update(response_format = ComponentsMemory),
@@ -160,9 +166,10 @@ CDA = MemoryAgent(
     # model_client = CDA_client,
     code_execution_config=False,
     max_consecutive_auto_reply=10,
-    human_input_mode="TERMINATE",
+    human_input_mode="NEVER",
     default_auto_reply="Conversation Delegation Agent has finished its conversation. ",
     function_map=None,  # No registered functions, by default it is None.
+    is_termination_msg=lambda msg: "-----END OF CONVERSATION-----" in msg["content"].lower()
 )
 
 
@@ -206,8 +213,8 @@ ERA = AssistantAgent(
 
 DJE = AssistantAgent(
     name="DocumentationEngineer",
-    description=generate_prompt("prompts/agents/evaluate-and-refine.prompt"),
-    system_message=generate_prompt("prompts/agents/evaluate-and-refine.prompt"),
+    description=generate_prompt("prompts/agents/documentation.prompt"),
+    system_message=generate_prompt("prompts/agents/documentation.prompt"),
     llm_config=llm_config,
     code_execution_config=False,
 )
@@ -215,7 +222,7 @@ DJE = AssistantAgent(
 # create a UserProxyAgent instance named "user_proxy"
 user_proxy = UserProxyAgent(
     name="user_proxy",
-    human_input_mode="TERMINATE",
+    human_input_mode="NEVER",
     max_consecutive_auto_reply=10,
     is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE"),
     # llm_config=llm_config,

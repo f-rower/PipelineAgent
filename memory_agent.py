@@ -1,6 +1,7 @@
 import asyncio
 import contextvars
 import json
+from pyexpat.errors import messages
 import regex
 
 from typing import (
@@ -57,7 +58,8 @@ class MemoryAgent(AssistantAgent):
     ):
         super().__init__(*args, **kwargs)
         self.strucutred_output = structured_output
-        self.memory_json = self.strucutred_output().model_dump(mode='json')
+        #self.memory_json = self.strucutred_output.model_dump(mode='json')
+        self.memory_json = self.strucutred_output().model_dump()
         self.memory_update_prompt = (
             memory_update_prompt
             if memory_update_prompt != None
@@ -72,7 +74,7 @@ class MemoryAgent(AssistantAgent):
             ConversableAgent.generate_oai_reply, MemoryAgent.generate_oai_reply
         )
         strucutred_output_config = self.llm_config.copy()
-        strucutred_output_config['config_list'][0].update(response_format = self.strucutred_output)
+        strucutred_output_config['config_list'][0].response_format = self.strucutred_output
 
         self.client_memory = OpenAIWrapper(**strucutred_output_config)
 
@@ -119,10 +121,15 @@ class MemoryAgent(AssistantAgent):
             return False, None
         if messages is None:
             messages = self._oai_messages[sender]
+            
         memory_instruction = self.memory_reply_prompt.format(
             memory=self.memory_json, instruction=messages[-1]['content']
         )
         memory_instruction = [{"content": memory_instruction, "role": "user"}]
+        iostream = IOStream.get_default()
+
+        #iostream.print(f'memory response: {memory_instruction}')
+        #iostream.print(f'messages: {messages}')
 
         extracted_response = self._generate_oai_reply_from_client(
             client,
@@ -130,7 +137,7 @@ class MemoryAgent(AssistantAgent):
             self.client_cache,
             
         )
-
+        #iostream.print(f'extracted_response: {extracted_response}')
         instruction = [
             {
                 "content": self.memory_update_prompt.format(
@@ -143,15 +150,16 @@ class MemoryAgent(AssistantAgent):
         memory_response = self._generate_oai_reply_from_client(
             self.client_memory, messages + instruction, self.client_cache
         )
-        
-        iostream = IOStream.get_default()
+        #iostream.print(f'instruction: {instruction}')
+
         iostream.print(colored("***** raw Memory *****", "green"), flush=True)
         iostream.print(memory_response, flush=True)
 
         # pattern = regex.compile(r'\{(?:[^{}]|(?R))*\}')
         # a = pattern.findall(memory_response.strip())
+    
         try:
-            self.memory_json = json.loads(memory_response["content"])
+            self.memory_json = json.loads(memory_response)
         # print the message received
         except:
             iostream.print(colored("***** loaded Memory *****", "green"), flush=True)
@@ -163,7 +171,6 @@ class MemoryAgent(AssistantAgent):
         return (
             (False, None) if extracted_response is None else (True, extracted_response)
         )
-
     async def a_generate_oai_reply(
         self,
         messages: Optional[List[Dict]] = None,
