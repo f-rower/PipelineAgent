@@ -1,9 +1,12 @@
 from autogen import GroupChat,GroupChatManager
 # from customegroupchat import customised_groupchat, customised_groupchatmanager
-from agents import DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy
+#from agents import DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy
+from agents import create_agents
 from LLM_config import llm_config
 from utils import generate_prompt, validate_json_output, StateTracker, validate_phase_transition, remove_thinking_output
 from autogen.agentchat.utils import gather_usage_summary
+
+[DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy] = create_agents()
 
 tracker = StateTracker()
 
