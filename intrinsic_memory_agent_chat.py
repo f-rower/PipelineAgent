@@ -22,7 +22,7 @@ def custom_speaker_selection_func(last_speaker, groupchat: GroupChat):
     global turn_counter
     turn_counter += 1
     print(turn_counter)
-    print(f'groupchat.messages[-1]: {groupchat.messages[-1]}')
+    print(f'groupchat.messages[-1]: {groupchat.messages[-1]['content']}')
     if "FINALIZATION" in groupchat.messages[-1]['content']:
         print("FINALIZATION found in the last message.")
         return DJE
@@ -45,9 +45,8 @@ def custom_speaker_selection_func(last_speaker, groupchat: GroupChat):
 
    
 
-agents = [CDA] + [DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy]
 group_chat = GroupChat(
-    agents,
+    [CDA] + [DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy],
     messages=[],
     select_speaker_message_template=generate_prompt("prompts/select_speaker_message_template.prompt"),
     select_speaker_prompt_template=generate_prompt("prompts/select_speaker_prompt_template.prompt"),
@@ -113,8 +112,9 @@ groupchat_result = user_proxy.initiate_chat(
 # Append the result to the responses list as a dictionary
 #intrinsic_memory_agent_responses.append({"result": group_chat.messages[-1],"turn_counter": turn_counter,"token_count": count_tokens(group_chat.messages)})
 
+
 intrinsic_memory_agent_responses = {
-        "result": group_chat.messages[-1],
+        "result": group_chat.messages[-1]["content"],
         "turn_counter": turn_counter,
         "usage": gather_usage_summary([CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy,chat_manager])
     }

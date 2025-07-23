@@ -37,7 +37,7 @@ config_list = [
 
 llm_config = {
     "timeout": 600,
-    "cache_seed": 42,
+    "cache_seed": None,
     "config_list": config_list,
     "temperature": 0.02,
 }
@@ -60,7 +60,7 @@ CDA_config_list = [
 
 llm_CDA_config = {
     "timeout": 600,
-    "cache_seed": 42,
+    "cache_seed": None,
     "config_list": CDA_config_list,
     "temperature": 0.02,
     # "max_tokens": 80,  # Force brief responses
