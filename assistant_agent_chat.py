@@ -1,10 +1,10 @@
 from autogen import GroupChat,GroupChatManager
 # from customegroupchat import customised_groupchat, customised_groupchatmanager
-from agents import DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy
+from assistant_agents import DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy
 from LLM_config import llm_config
 from utils import generate_prompt, validate_json_output, StateTracker, validate_phase_transition, remove_thinking_output
 
-
+"""A multiagent system composed solely of assistant agents without intrinsic memory"""
 tracker = StateTracker()
 
 # DEA.register_hook(hookable_method="process_message_before_send",hook=validate_delegator_message)

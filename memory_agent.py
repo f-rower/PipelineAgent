@@ -26,7 +26,8 @@ from autogen.formatting_utils import colored
 
 class MemoryAgent(AssistantAgent):
 
-    DEFAULT_MEMORY_UPDATE_PROMPT = """Use the entire history of the groupchat (presented before this message) to populate and update the current memory json with factual imformation. 
+    DEFAULT_MEMORY_UPDATE_PROMPT = """Use the entire history of the groupchat (presented before this message) to 
+    populate and update the current memory json with factual imformation. 
 
     *** OUTPUT SHOULD ONLY BE VALID JSON.  
     Be very careful to not include anything that renders the output not directly loadable with json.loads(). *** 
@@ -41,7 +42,7 @@ class MemoryAgent(AssistantAgent):
 
     Respond according to the ***last instruction from Conversation delegation agent***. 
 
-    For cuntext, current memory from chat based on your own outputs: {memory}. 
+    For context, current memory from chat based on your own outputs: {memory}. 
     
     Newest instruction: {instruction}. 
     
