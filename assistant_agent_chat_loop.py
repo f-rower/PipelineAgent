@@ -1,20 +1,12 @@
 from autogen import GroupChat,GroupChatManager
 # from customegroupchat import customised_groupchat, customised_groupchatmanager
-from assistant_agents import DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy
+from assistant_agents import create_agents
 from LLM_config import llm_config
 from utils import generate_prompt, validate_json_output, StateTracker, validate_phase_transition, remove_thinking_output
 from autogen.agentchat.utils import gather_usage_summary
 import json
 
 """A multiagent system composed solely of assistant agents without intrinsic memory"""
-
-tracker = StateTracker()
-
-# DEA.register_hook(hookable_method="process_message_before_send",hook=validate_delegator_message)
-DEA.register_hook(hook = remove_thinking_output, hookable_method = "process_message_before_send")
-DEA.register_hook(hook=tracker.track_proposals, hookable_method="process_message_before_send")
-DEA.register_hook(hook=validate_phase_transition, hookable_method="process_message_before_send")
-DJE.register_hook(hook = validate_json_output, hookable_method = "process_message_before_send")
 
 worker_counter = 0
 turn_counter = 1
@@ -58,25 +50,15 @@ def run_chat():
         select_speaker_auto_multiple_template=generate_prompt("prompts/select_speaker_auto_multiple_template.prompt"),
         select_speaker_auto_none_template=generate_prompt("prompts/select_speaker_auto_none_template.prompt"),
         speaker_selection_method=custom_speaker_selection_func,
-        # speaker_selection_method=lambda **kwargs: (
-        #     # Force proposal order
-        #     ['MachineLearningEngineer', 'InfrastructureEngineer',
-        #      'DataEngineer', 'BusinessObjectiveEngineer'] if tracker.state['proposals'] < 4 
-        #     else kwargs['agents']  # Release control after 4 proposals
-        # ),
-        # phase_lock={
-        #     'proposal': {'min_messages': 4, 'max_messages': 4},
-        #     'discussion': {'min_messages': 12, 'max_messages': 12},
-        #     'consensus': {'min_messages': 4}
-        # },
+
         max_round=80,
         allow_repeat_speaker=False,
 
-        #termination_condition=lambda x: "PIPELINE_OVERVIEW.json" in x[-1]["content"]
+
     )
 
-    group_chat.reset()
-
+    #group_chat.reset()
+    #print("cda location:",id(CDA))
 
     chat_manager = GroupChatManager(groupchat=group_chat)
 
@@ -114,6 +96,7 @@ def run_chat():
     groupchat_result = user_proxy.initiate_chat(
         chat_manager, message=generated_request
     )
+
     # Append the result to the responses list as a dictionary
     #intrinsic_memory_agent_responses.append({"result": group_chat.messages[-1],"turn_counter": turn_counter,"token_count": count_tokens(group_chat.messages)})
     return group_chat,chat_manager
@@ -121,10 +104,23 @@ def run_chat():
 assistant_agent_responses = []
 
 for i in range(5):
-    print(f"Running chat session {i+1}")
+    print(f"-----\nRunning chat session {i+1}\n-----")
+
+    # Reload agents and reset tracker for each session
+    CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy = create_agents()
+    
+    tracker = StateTracker()
+
+    # DEA.register_hook(hookable_method="process_message_before_send",hook=validate_delegator_message)
+    DEA.register_hook(hook=remove_thinking_output, hookable_method="process_message_before_send")
+    DEA.register_hook(hook=tracker.track_proposals, hookable_method="process_message_before_send")
+    DEA.register_hook(hook=validate_phase_transition, hookable_method="process_message_before_send")
+    DJE.register_hook(hook=validate_json_output, hookable_method="process_message_before_send")
+
+    # Run the chat session
     group_chat, chat_manager = run_chat()
     assistant_agent_responses.append({
-        "result": group_chat.messages[-1]["content"],
+        "result": group_chat.messages[:],
         "turn_counter": turn_counter,
         "usage": gather_usage_summary([CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy, chat_manager])
     })
@@ -133,9 +129,7 @@ for i in range(5):
     # This is necessary to ensure each chat session starts fresh
     turn_counter = 1  # Reset turn counter for the next chat session
     worker_counter = 0 # Reset worker counter for the next chat session
-    tracker = StateTracker() # Reset state tracker for the next chat session
 
 # Save the responses to a JSON file
-with open("assistant_agent_chat_responses.json", "w", encoding="utf-8") as f:
+with open("002_assistant_agent_chat_responses.json", "w", encoding="utf-8") as f:
     json.dump(assistant_agent_responses, f, indent=2, ensure_ascii=False)
-

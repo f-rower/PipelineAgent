@@ -120,9 +120,7 @@ for i in range(5):
     # Reload agents and reset tracker for each session
     CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy = create_agents()
     print(f"Agents created: {[agent.memory_json for agent in [CDA, DEA, MLA, IA, BOA]]}")
-    intrinsic_memory_agent_responses.append({
-        "agent_memories": [agent.memory_json for agent in [CDA, DEA, MLA, IA, BOA]]
-    })
+    
     tracker = StateTracker()
 
     # DEA.register_hook(hookable_method="process_message_before_send",hook=validate_delegator_message)
