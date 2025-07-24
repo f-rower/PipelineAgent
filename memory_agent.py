@@ -129,7 +129,7 @@ class MemoryAgent(AssistantAgent):
         memory_instruction = [{"content": memory_instruction, "role": "user"}]
         iostream = IOStream.get_default()
 
-        #iostream.print(f'memory response: {memory_instruction}')
+        iostream.print(f'memory response: {memory_instruction}')
         #iostream.print(f'messages: {messages}')
 
         extracted_response = self._generate_oai_reply_from_client(

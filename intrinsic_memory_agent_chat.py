@@ -5,8 +5,10 @@ from agents import create_agents
 from LLM_config import llm_config
 from utils import generate_prompt, validate_json_output, StateTracker, validate_phase_transition, remove_thinking_output
 from autogen.agentchat.utils import gather_usage_summary
+import json
 
-[DEA, MLA, IA, BOA, CDA, KIA, ERA, DJE, user_proxy] = create_agents()
+CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy = create_agents()
+#print(f"Agents created: {CDA.name}, {DEA.name}, {MLA.name}, {IA.name}, {BOA.name}, {KIA.name}, {ERA.name}, {DJE.name}, {user_proxy.name}")
 
 tracker = StateTracker()
 
@@ -21,7 +23,7 @@ turn_counter = 1
 # turn_counter = -1
 def custom_speaker_selection_func(last_speaker, groupchat: GroupChat):
     workers = [BOA, DEA, MLA, IA]
-    # if "final" groupchat.last_message
+    
     global turn_counter
     turn_counter += 1
     print(turn_counter)
@@ -117,9 +119,14 @@ groupchat_result = user_proxy.initiate_chat(
 
 
 intrinsic_memory_agent_responses = {
-        "result": group_chat.messages[-1]["content"],
-        "turn_counter": turn_counter,
-        "usage": gather_usage_summary([CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy,chat_manager])
-    }
+    #"result": group_chat.messages[-1]["content"],
+    "result": group_chat.messages[:],
+    "turn_counter": turn_counter,
+    "usage": gather_usage_summary([CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy, chat_manager])
+}
+
+# Save to a JSON file
+with open("intrinsic_memory_agent_responses.json", "w") as f:
+    json.dump(intrinsic_memory_agent_responses, f, indent=4)
 
 print(intrinsic_memory_agent_responses)

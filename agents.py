@@ -231,4 +231,4 @@ def create_agents(llm_config=llm_config, llm_CDA_config=llm_CDA_config):
         system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
     Otherwise, reply CONTINUE, and the reason why the task is not solved yet.""",
     )
-    return [CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy]
+    return CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy
