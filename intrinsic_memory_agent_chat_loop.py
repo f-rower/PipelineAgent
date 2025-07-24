@@ -114,13 +114,15 @@ def run_chat():
 
 intrinsic_memory_agent_responses = []
 
-for i in range(2):
+for i in range(5):
     print(f"-----\nRunning chat session {i+1}\n-----")
 
     # Reload agents and reset tracker for each session
     CDA, DEA, MLA, IA, BOA, KIA, ERA, DJE, user_proxy = create_agents()
     print(f"Agents created: {[agent.memory_json for agent in [CDA, DEA, MLA, IA, BOA]]}")
-
+    intrinsic_memory_agent_responses.append({
+        "agent_memories": [agent.memory_json for agent in [CDA, DEA, MLA, IA, BOA]]
+    })
     tracker = StateTracker()
 
     # DEA.register_hook(hookable_method="process_message_before_send",hook=validate_delegator_message)
@@ -143,5 +145,5 @@ for i in range(2):
     worker_counter = 0 # Reset worker counter for the next chat session
 
 # Save the responses to a JSON file
-with open("intrinsic_memory_agent_chat_responses.json", "w", encoding="utf-8") as f:
+with open("002_intrinsic_memory_agent_chat_responses.json", "w", encoding="utf-8") as f:
     json.dump(intrinsic_memory_agent_responses, f, indent=2, ensure_ascii=False)
