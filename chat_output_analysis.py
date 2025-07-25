@@ -1,9 +1,9 @@
 import json
 import pandas as pd
 
-with open("001_assistant_agent_chat_responses.json", "r", encoding="utf-8") as f:
+with open("001_all_memory_agent_chat_responses.json", "r", encoding="utf-8") as f:
     assistant_agent_responses_1 = json.load(f)
-with open("002_assistant_agent_chat_responses.json", "r", encoding="utf-8") as f_2:
+with open("002_all_memory_agent_chat_responses.json", "r", encoding="utf-8") as f_2:
     assistant_agent_responses_2 = json.load(f_2)
 
 # Load only the responses from businessobjectiveagent
@@ -15,5 +15,5 @@ assistant_data_pipeline_proposal_answers = []
 assistant_data_pipeline_proposal_answers.append([assistant_data_pipeline_proposal_answers_1,assistant_data_pipeline_proposal_answers_2])
 print(assistant_data_pipeline_proposal_answers)
 
-with open("assistant_data_pipeline_proposal_answers_full_clean.json", "w", encoding="utf-8") as f:
+with open("all_memory_data_pipeline_proposal_answers_full_clean.json", "w", encoding="utf-8") as f:
     json.dump(assistant_data_pipeline_proposal_answers, f, indent=2, ensure_ascii=False)
