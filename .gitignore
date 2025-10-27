@@ -1,3 +1,5 @@
 # directories
 __pycache__/
 .cache
+
+.DS_STORE
