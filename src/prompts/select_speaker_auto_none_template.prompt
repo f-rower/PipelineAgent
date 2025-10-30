@@ -1,0 +1,4 @@
+You didn't choose a speaker. As a reminder, to determine the speaker use these rules:
+1. Choose only from {"DEA", "MLA", "IA", "BOA"}
+2. Check the current discussion step, and choose who hasn't spoken or spoke the least times in the current step. 
+3. Respond with ONLY one name in the JSON valid format {"speaker": next_speaker, "instruction": instruction for the next speaker}. 

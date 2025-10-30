@@ -1,0 +1,99 @@
+{
+  "Pipeline": {
+    "Scalability": 6,
+    "Reliability": 5,
+    "Accuracy": 4,
+    "Usability": 3,
+    "Relevance": 6,
+    "Cost-effectiveness": 4,
+    "Documentation": 2
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 6,
+    "Reliability": 4,
+    "Accuracy": 3,
+    "Usability": 4,
+    "Relevance": 6,
+    "Cost-effectiveness": 4,
+    "Documentation": 5
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 6,
+    "Reliability": 4,
+    "Accuracy": 6,
+    "Usability": 4,
+    "Relevance": 2,
+    "Cost-effectiveness": 3,
+    "Documentation": 3
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 8,
+    "Reliability": 6,
+    "Accuracy": 5,
+    "Usability": 4,
+    "Relevance": 4,
+    "Cost-effectiveness": 7,
+    "Documentation": 3
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 8,
+    "Reliability": 5,
+    "Accuracy": 6,
+    "Usability": 4,
+    "Relevance": 5,
+    "Cost-effectiveness": 4,
+    "Documentation": 3
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 7,
+    "Reliability": 5,
+    "Accuracy": 3,
+    "Usability": 3,
+    "Relevance": 5,
+    "Cost-effectiveness": 5,
+    "Documentation": 4
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 8,
+    "Reliability": 5,
+    "Accuracy": 6,
+    "Usability": 4,
+    "Relevance": 8,
+    "Cost-effectiveness": 6,
+    "Documentation": 4
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 8,
+    "Reliability": 6,
+    "Accuracy": 4,
+    "Usability": 4,
+    "Relevance": 9,
+    "Cost-effectiveness": 5,
+    "Documentation": 3
+  }
+},
+{
+  "Pipeline": {
+    "Scalability": 6,
+    "Reliability": 4,
+    "Accuracy": 5,
+    "Usability": 3,
+    "Relevance": 8,
+    "Cost-effectiveness": 4,
+    "Documentation": 5
+  }
+}

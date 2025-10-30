@@ -1,0 +1,1 @@
+Read the above conversation. Then select the next speaker from {"DEA", "MLA", "IA", "BOA"}. Respond with ONLY one name in the JSON valid format {"speaker": next_speaker, "instruction": instruction for the next speaker}. 
